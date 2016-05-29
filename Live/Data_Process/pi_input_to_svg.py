@@ -14,7 +14,7 @@ debug = False				#True if you want to use made up data
 baud            	= 9600		# baud rate for serial port
 txt_logging      	= True		# Enable/Disable logging to TXT file
 verbose             	= False
-address             	= '/dev/ttyUSB0'
+address             	= '/dev/ttyACM0'
 thingspeak_update   	= True
 internet		= True
 ## Values to store data
