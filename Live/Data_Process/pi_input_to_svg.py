@@ -14,7 +14,7 @@ debug = False				#True if you want to use made up data
 baud            	= 9600		# baud rate for serial port
 txt_logging      	= True		# Enable/Disable logging to TXT file
 verbose             	= False
-address             	= '/dev/ttyACM0'
+address             	= '/dev/ttyUSB0'
 thingspeak_update   	= True
 internet		= True
 ## Values to store data
@@ -32,9 +32,9 @@ tide_datetime = [None]
 tide_next_time = [None]
 tide_next_type = [None]
 tide_next_mag = [None]
-tide_following_time = [None]
-tide_following_type = [None]
-tide_following_mag = [None]
+tide_pre_time = [None]
+tide_pre_type = [None]
+tide_pre_mag = [None]
 tide_list = []
 tide_time = [None]
 tide_type = [None]
@@ -96,7 +96,7 @@ if (False):
 
 ## SUNRISE - SUNSET SHIT GOES HERE
 
-## Or not
+## Or not, done manually on 2016
 
 
 
@@ -239,37 +239,32 @@ while(1):
 	while(minute > tide_datetime):
 		if len(tide_list)<=1:
 			tide_list = get_tide(tomorrow)
+			tide_pre_time = tide_next_time
+			tide_pre_type = tide_next_type
+			tide_pre_mag = tide_next_mag
 			tide_next_time = tide_list[0][0]
+			tide_next_type = tide_list[0][1]
+			tide_next_mag = tide_list[0][2]
+			old = tide_datetime
 			dummy = datetime.datetime.strptime(tide_next_time,'%I:%M %p')
 			tide_datetime = tide_datetime.replace(tomorrow.year, tomorrow.month, tomorrow.day, dummy.hour,dummy.minute)
-			tide_next_type = tide_list[0][1]
-			tide_next_mag = tide_list[0][2]
 		else:
 			tide_list = tide_list[1:]
+			tide_pre_time = tide_next_time
+			tide_pre_type = tide_next_type
+			tide_pre_mag = tide_next_mag
 			tide_next_time = tide_list[0][0]
-			dummy = datetime.datetime.strptime(tide_next_time,'%I:%M %p')
-			
-			tide_datetime = tide_datetime.replace(today.year, today.month, today.day, dummy.hour,dummy.minute)
-			#print(tide_list)
 			tide_next_type = tide_list[0][1]
 			tide_next_mag = tide_list[0][2]
-			if len(tide_list)==1:
-				helper =get_tide(tomorrow)
-				for item in helper:
-					tide_list.append(item)
-				if(minute > tide_datetime):
-					tide_list = tide_list[1:]
-					tide_next_time = tide_list[0][0]
-					tide_next_type = tide_list[0][1]
-					tide_next_mag = tide_list[0][2]
-					dummy = datetime.datetime.strptime(tide_next_time,'%I:%M %p')
-					tide_datetime = tide_datetime.replace(tomorrow.year, tomorrow.month, tomorrow.day, dummy.hour,dummy.minute)
-			tide_following_time = tide_list[1][0]
-			tide_following_type = tide_list[1][1]
-			tide_following_mag = tide_list[1][2]
+			old = tide_datetime
+			dummy = datetime.datetime.strptime(tide_next_time,'%I:%M %p')
+			tide_datetime = tide_datetime.replace(today.year, today.month, today.day, dummy.hour,dummy.minute)
+			#print(tide_list)
+			
 	
 	#print(tide_list)
-	#print(tide_next_type)
+	#print(tide_pre_time)
+	#print(tide_next_time)
 	#### Initialization of serial usb port
 	#buff = read_buffer()
 	buff = spb.read(35)
@@ -318,12 +313,12 @@ while(1):
 	output = output.replace('PRESS',  str(press_2))
 	output = output.replace('RLHUM',str(humid_2))
 	output = output.replace('DWPNT',"{0:.2f}".format(dew))
-	output = output.replace('TDNTY',str(tide_next_type))
-	output = output.replace('TDNTM',str(tide_next_time))
-	output = output.replace('TDNLV',str(tide_next_mag))
-	output = output.replace('TDFTY',str(tide_following_type))
-	output = output.replace('TDFTM',str(tide_following_time))
-	output = output.replace('TDFLV',str(tide_following_mag))
+	output = output.replace('TDNTY',str(tide_pre_type))
+	output = output.replace('TDNTM',old.strftime('%H:%M'))
+	output = output.replace('TDNLV',str(tide_pre_mag))
+	output = output.replace('TDFTY',str(tide_next_type))
+	output = output.replace('TDFTM',tide_datetime.strftime('%H:%M'))
+	output = output.replace('TDFLV',str(tide_next_mag))
 	
 	codecs.open('TEST.svg', 'w', encoding='utf-8').write(output)
 
@@ -365,12 +360,4 @@ while(1):
 				print("SENSOR ID NOT FOUND")
 	except requests.exceptions.ConnectionError as e:
 		print("Internet is not connected at "+ str(now))
-
-
-
-
-
-
-
-
 
