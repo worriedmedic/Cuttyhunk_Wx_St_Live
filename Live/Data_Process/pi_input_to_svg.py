@@ -28,9 +28,6 @@ sheetname =[None]
 fdir = [None]
 
 ## Helper variables for tides
-tide_past_type = [None] #LWH 5/29
-tide_past_time = [None] #LWH 5/29
-tide_past_mag = [None] #LWH 5/29
 tide_datetime = [None]
 tide_next_time = [None]
 tide_next_type = [None]
@@ -242,10 +239,6 @@ while(1):
 	while(minute > tide_datetime):
 		if len(tide_list)<=1:
 			tide_list = get_tide(tomorrow)
-			tide_past_type = tide_next_type #LWH 5/29
-			tide_past_time = tide_next_time #LWH 5/29
-			tide_past_mag = tide_next_mag #LWH 5/29
-			time_past_time = datetime.datetime.strptime(tide_past_time,'%I:%M %p') #LWH 5/29
 			tide_pre_time = tide_next_time
 			tide_pre_type = tide_next_type
 			tide_pre_mag = tide_next_mag
@@ -257,10 +250,6 @@ while(1):
 			tide_datetime = tide_datetime.replace(tomorrow.year, tomorrow.month, tomorrow.day, dummy.hour,dummy.minute)
 		else:
 			tide_list = tide_list[1:]
-			tide_past_type = tide_next_type #LWH 5/29
-			tide_past_time = tide_next_time #LWH 5/29
-			tide_past_mag = tide_next_mag #LWH 5/29
-			time_past_time = datetime.datetime.strptime(tide_past_time,'%I:%M %p') #LWH 5/29
 			tide_pre_time = tide_next_time
 			tide_pre_type = tide_next_type
 			tide_pre_mag = tide_next_mag
@@ -324,9 +313,6 @@ while(1):
 	output = output.replace('PRESS',  str(press_2))
 	output = output.replace('RLHUM',str(humid_2))
 	output = output.replace('DWPNT',"{0:.2f}".format(dew))
-	output = output.replace('TDPTM',tide_past_time.strftime('%H:%M') #LWH 5/29
-	output = output.replace('TDPTY',str(tide_past_type)) #LWH 5/29
-	output = output.replace('TDPLV',str(tide_past_mag)) #LWH 5/29
 	output = output.replace('TDNTY',str(tide_pre_type))
 	output = output.replace('TDNTM',old.strftime('%H:%M'))
 	output = output.replace('TDNLV',str(tide_pre_mag))
