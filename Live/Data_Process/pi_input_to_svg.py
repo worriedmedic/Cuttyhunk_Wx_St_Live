@@ -245,6 +245,7 @@ while(1):
 			tide_past_type = tide_next_type #LWH 5/29
 			tide_past_time = tide_next_time #LWH 5/29
 			tide_past_mag = tide_next_mag #LWH 5/29
+			time_past_time = datetime.datetime.strptime(tide_past_time,'%I:%M %p') #LWH 5/29
 			tide_pre_time = tide_next_time
 			tide_pre_type = tide_next_type
 			tide_pre_mag = tide_next_mag
@@ -259,6 +260,7 @@ while(1):
 			tide_past_type = tide_next_type #LWH 5/29
 			tide_past_time = tide_next_time #LWH 5/29
 			tide_past_mag = tide_next_mag #LWH 5/29
+			time_past_time = datetime.datetime.strptime(tide_past_time,'%I:%M %p') #LWH 5/29
 			tide_pre_time = tide_next_time
 			tide_pre_type = tide_next_type
 			tide_pre_mag = tide_next_mag
@@ -322,7 +324,7 @@ while(1):
 	output = output.replace('PRESS',  str(press_2))
 	output = output.replace('RLHUM',str(humid_2))
 	output = output.replace('DWPNT',"{0:.2f}".format(dew))
-	output = output.replace('TDPTM',str(tide_past_time)) #LWH 5/29
+	output = output.replace('TDPTM',tide_past_time.strftime('%H:%M') #LWH 5/29
 	output = output.replace('TDPTY',str(tide_past_type)) #LWH 5/29
 	output = output.replace('TDPLV',str(tide_past_mag)) #LWH 5/29
 	output = output.replace('TDNTY',str(tide_pre_type))
