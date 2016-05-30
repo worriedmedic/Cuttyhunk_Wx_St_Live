@@ -2,8 +2,12 @@
 Live code of Cuttyhunk_Wx_St
 
 Sensors: Arduino Pro Mini (Mega328, v3.3, 8mHz with BME280 sensor, transmitting via HopeRF RMF95x (915mHz), powered by x2 AA)
+
 Gateway: Adafruit Feather 32u4 (datalogger) recieving via HopeRF RFM95x (915 mHz) and passing data to RPi3 via serial port
+
 Processing: RPi3, python script logging/pushing data to ThingSpeak/Twitter/Local Logs, updating SVG to be displayed on a jailbroken Kindle2i.
+
+WAN Access: Verizon Wireless Pantech MHS291L(VW) --> Has the ability to "tether" to computer via USB connection.
 
 Future Research: 
 
